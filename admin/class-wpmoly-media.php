@@ -300,7 +300,17 @@ if ( ! class_exists( 'WPMOLY_Media' ) ) :
 			$tmp = download_url( $file );
 
 			preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $file, $matches );
-			$file_array['name'] = basename( $matches[0] );
+			//$file_array['name'] = basename( $matches[0] );
+			/** ******************************* */
+			
+			$org_file_name = basename( $matches[0] );
+			$file_extension = substr(strrchr($org_file_name,'.'),1);
+			$title      = WPMOLY_Movies::get_movie_meta( $post_id, 'title' );
+			$year       = apply_filters( 'wpmoly_format_movie_date',  $year, 'Y' );
+			$file_name = sanitize_title($title);
+			$file_array['name'] = $file_name . '_'.$year.'.' . $file_extension;
+			
+			/** ******************************* */
 			$file_array['tmp_name'] = $tmp;
 
 			if ( is_wp_error( $tmp ) ) {
